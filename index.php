@@ -10,20 +10,23 @@ $method = $_SERVER['REQUEST_METHOD'];
 // ================= READ =================
 if ($method == 'GET') {
 
-    // GET BY ID
     if (isset($_GET['id'])) {
 
         $id = $_GET['id'];
 
-        $query = mysqli_query($koneksi, "SELECT * FROM users WHERE id='$id'");
+        $query = mysqli_query($koneksi,
+            "SELECT * FROM users WHERE id='$id'"
+        );
+
         $data = mysqli_fetch_assoc($query);
 
         echo json_encode($data);
 
     } else {
 
-        // GET ALL
-        $query = mysqli_query($koneksi, "SELECT * FROM users");
+        $query = mysqli_query($koneksi,
+            "SELECT * FROM users"
+        );
 
         $result = [];
 
@@ -40,8 +43,10 @@ if ($method == 'GET') {
 // ================= CREATE =================
 elseif ($method == 'POST') {
 
-    $nama  = $_POST['nama'];
-    $sandi = $_POST['sandi'];
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    $nama  = $data['nama'];
+    $sandi = $data['sandi'];
 
     $query = mysqli_query($koneksi,
         "INSERT INTO users(nama, sandi)
@@ -69,11 +74,11 @@ elseif ($method == 'POST') {
 // ================= UPDATE =================
 elseif ($method == 'PUT') {
 
-    parse_str(file_get_contents("php://input"), $_PUT);
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    $id    = $_PUT['id'];
-    $nama  = $_PUT['nama'];
-    $sandi = $_PUT['sandi'];
+    $id    = $data['id'];
+    $nama  = $data['nama'];
+    $sandi = $data['sandi'];
 
     $query = mysqli_query($koneksi,
         "UPDATE users
@@ -102,9 +107,9 @@ elseif ($method == 'PUT') {
 // ================= DELETE =================
 elseif ($method == 'DELETE') {
 
-    parse_str(file_get_contents("php://input"), $_DELETE);
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    $id = $_DELETE['id'];
+    $id = $data['id'];
 
     $query = mysqli_query($koneksi,
         "DELETE FROM users WHERE id='$id'"
