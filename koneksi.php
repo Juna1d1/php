@@ -1,16 +1,14 @@
 <?php
-// PHP akan mencoba mengambil data asli dari Railway dulu, 
-// kalau tidak ada baru pakai data di dalam kutip.
-$host = getenv('MYSQLHOST') ?: "mysql.railway.internal";
-$user = getenv('MYSQLUSER') ?: "root";
-$pass = getenv('MYSQLPASSWORD') ?: "LZstNChgUtUIzpLIpzjVtJVusCMZscPX";
-$db   = getenv('MYSQLDATABASE') ?: "railway";
-$port = getenv('MYSQLPORT') ?: 3306;
 
-$koneksi = mysqli_connect($host, $user, $pass, $db, $port);
+$host = $_ENV['MYSQLHOST'];
+$user = $_ENV['MYSQLUSER'];
+$pass = $_ENV['MYSQLPASSWORD'];
+$db   = $_ENV['MYSQLDATABASE'];
+$port = $_ENV['MYSQLPORT'];
 
-if (!$koneksi) {
-    // Menampilkan error yang lebih spesifik jika gagal
+$conn = mysqli_connect($host, $user, $pass, $db, $port);
+
+if (!$conn) {
     die("Koneksi gagal: " . mysqli_connect_error());
 }
 ?>
