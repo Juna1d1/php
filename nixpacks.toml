@@ -1,2 +1,2 @@
 [phases.setup]
-nixPkgs = ["...", "php82Packages.extensions.mysqli"]
+nixPkgs = ["php", "php82Packages.extensions.mysqli"]
