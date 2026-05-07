@@ -136,47 +136,6 @@ if(isset($_GET['api'])){
 <head>
 <meta charset="UTF-8">
 <title>CRUD Railway</title>
-
-<!-- <style>
-body{
-    font-family:Arial;
-    background:#0f172a;
-    color:white;
-    padding:30px;
-}
-
-input{
-    padding:10px;
-    margin:5px;
-}
-
-button{
-    padding:10px 15px;
-    background:#2563eb;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-    background:white;
-    color:black;
-}
-
-th,td{
-    border:1px solid #ccc;
-    padding:10px;
-}
-
-a{
-    color:red;
-    text-decoration:none;
-}
-</style> -->
-
 </head>
 <body>
 
