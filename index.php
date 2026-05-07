@@ -166,42 +166,6 @@ if(isset($_GET['api'])){
 
 <h2>Data Users</h2>
 
-<table>
-
-<tr>
-    <th>ID</th>
-    <th>Nama</th>
-    <th>Sandi</th>
-    <th>Aksi</th>
-</tr>
-
-<?php
-
-$data = mysqli_query($koneksi,
-    "SELECT * FROM users"
-);
-
-while($d = mysqli_fetch_assoc($data)){
-
-?>
-
-<tr>
-
-    <td><?= $d['id'] ?></td>
-    <td><?= $d['nama'] ?></td>
-    <td><?= $d['sandi'] ?></td>
-
-    <td>
-        <a href="?hapus=<?= $d['id'] ?>">
-            Hapus
-        </a>
-    </td>
-
-</tr>
-
-<?php } ?>
-
-</table>
 
 </body>
 </html>
