@@ -137,7 +137,7 @@ if(isset($_GET['api'])){
 <meta charset="UTF-8">
 <title>CRUD Railway</title>
 
-<style>
+<!-- <style>
 body{
     font-family:Arial;
     background:#0f172a;
@@ -175,7 +175,7 @@ a{
     color:red;
     text-decoration:none;
 }
-</style>
+</style> -->
 
 </head>
 <body>
