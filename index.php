@@ -1,60 +1,129 @@
-<?php include 'koneksi.php'; ?>
+<?php
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>PHP CRUD Railway</title>
-</head>
-<body>
-    <h2>Tambah Data</h2>
-    <form method="POST">
-        <input type="text" name="nama" placeholder="Nama" required>
-        <input type="sandi" name="sandi" placeholder="sandi" required>
-        <button type="submit" name="tambah">Simpan</button>
-    </form>
+header("Content-Type: application/json");
 
-    <?php
+include 'koneksi.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+$method = $_SERVER['REQUEST_METHOD'];
 
-    // Logika Create
-    if(isset($_POST['tambah'])){
-        $nama = $_POST['nama'];
-        $sandi = $_POST['sandi'];
-        mysqli_query($koneksi, "INSERT INTO users (nama, sandi) VALUES('$nama', '$sandi')");
+
+// ================= READ =================
+if ($method == 'GET') {
+
+    // GET BY ID
+    if (isset($_GET['id'])) {
+
+        $id = $_GET['id'];
+
+        $query = mysqli_query($koneksi, "SELECT * FROM users WHERE id='$id'");
+        $data = mysqli_fetch_assoc($query);
+
+        echo json_encode($data);
+
+    } else {
+
+        // GET ALL
+        $query = mysqli_query($koneksi, "SELECT * FROM users");
+
+        $result = [];
+
+        while ($row = mysqli_fetch_assoc($query)) {
+            $result[] = $row;
+        }
+
+        echo json_encode($result);
     }
+}
 
-    // Logika Delete
-    if(isset($_GET['hapus'])){
-        $id = $_GET['hapus'];
-        mysqli_query($koneksi, "DELETE FROM users WHERE id=$id");
-        header("Location: index.php");
+
+
+// ================= CREATE =================
+elseif ($method == 'POST') {
+
+    $nama  = $_POST['nama'];
+    $sandi = $_POST['sandi'];
+
+    $query = mysqli_query($koneksi,
+        "INSERT INTO users(nama, sandi)
+         VALUES('$nama','$sandi')"
+    );
+
+    if ($query) {
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Data berhasil ditambah"
+        ]);
+
+    } else {
+
+        echo json_encode([
+            "status" => "error",
+            "message" => mysqli_error($koneksi)
+        ]);
     }
-    ?>
+}
 
-    <h2>Data Users</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>sandi</th>
-            <th>Aksi</th>
-        </tr>
-        <?php
-        $data = mysqli_query($koneksi, "SELECT * FROM users");
-        while($d = mysqli_fetch_array($data)){
-        ?>
-        <tr>
-            <td><?php echo $d['id']; ?></td>
-            <td><?php echo $d['nama']; ?></td>
-            <td><?php echo $d['sandi']; ?></td>
-            <td>
-                <a href="index.php?hapus=<?php echo $d['id']; ?>">Hapus</a>
-            </td>
-        </tr>
-        <?php } ?>
-    </table>
-</body>
-</html>
+
+
+// ================= UPDATE =================
+elseif ($method == 'PUT') {
+
+    parse_str(file_get_contents("php://input"), $_PUT);
+
+    $id    = $_PUT['id'];
+    $nama  = $_PUT['nama'];
+    $sandi = $_PUT['sandi'];
+
+    $query = mysqli_query($koneksi,
+        "UPDATE users
+         SET nama='$nama', sandi='$sandi'
+         WHERE id='$id'"
+    );
+
+    if ($query) {
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Data berhasil diupdate"
+        ]);
+
+    } else {
+
+        echo json_encode([
+            "status" => "error",
+            "message" => mysqli_error($koneksi)
+        ]);
+    }
+}
+
+
+
+// ================= DELETE =================
+elseif ($method == 'DELETE') {
+
+    parse_str(file_get_contents("php://input"), $_DELETE);
+
+    $id = $_DELETE['id'];
+
+    $query = mysqli_query($koneksi,
+        "DELETE FROM users WHERE id='$id'"
+    );
+
+    if ($query) {
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Data berhasil dihapus"
+        ]);
+
+    } else {
+
+        echo json_encode([
+            "status" => "error",
+            "message" => mysqli_error($koneksi)
+        ]);
+    }
+}
+
+?>
